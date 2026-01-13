@@ -1,0 +1,9 @@
+<target name="copyDir">
+
+    <mkdir dir="targetFolder"/>
+
+    <copy todir="targetFolder">
+        <fileset dir="sourceFolder"/>
+    </copy>
+
+</target>

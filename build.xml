@@ -1,0 +1,83 @@
+<project name="RealTimeProject" default="run" basedir=".">
+
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="dist"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath>
+                <fileset dir="lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/RealTimeProject.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="Hello"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${dist.dir}/RealTimeProject.jar" fork="true"/>
+    </target>
+
+<!-- Create and Copy Task -->
+    <target name="copyDir" depends="compile">
+    <mkdir dir="targetFolder"/>
+        <copy todir="targetFolder/sourceFolder">
+            <fileset dir="sourceFolder"/>
+        </copy>
+    </target>
+
+<!-- Rename Task -->
+    <target name="renameFolder">
+        <mkdir dir="oldFolder"/>
+        <move file="oldFolder" tofile="renameFolder"/>
+    </target>
+
+<!-- Delete Task -->
+    <target name="deleteFolder">
+        <delete dir="renameFolder"/>
+    </target>
+
+<!-- Zip File Task -->
+    <target name="zipFile" depends="copyDir">
+        <mkdir dir="MyFolder"/>
+        <zip destfile="MyFolder/RealTimeProject.zip">
+            <fileset dir="RealTimeProject"/>
+        </zip>
+    </target>
+
+<!-- direct OS commands -->
+    <target name="runCmd">
+        <exec executable="cmd">
+            <arg value="/c"/>
+            <arg value="echo Hello World"/>
+        </exec>
+        <exec executable="cmd">
+            <arg value="/c"/>
+            <arg value="dir"/>
+        </exec>
+    </target>
+
+<!-- Windows - Batch File Run -->
+    <target name="runBat">
+        <exec executable="cmd">
+            <arg value="/c"/>
+            <arg value="demo.bat"/>
+        </exec>
+    </target>
+
+</project>
